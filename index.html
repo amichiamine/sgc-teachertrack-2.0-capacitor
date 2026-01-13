@@ -68,34 +68,50 @@
         // Importer Capacitor depuis CDN (fonctionne aussi bien sur web que dans l'APK)
         import { Capacitor } from 'https://cdn.jsdelivr.net/npm/@capacitor/core@5/+esm';
         import { Filesystem, Directory, Encoding } from 'https://cdn.jsdelivr.net/npm/@capacitor/filesystem@5/+esm';
-        
+        import { Preferences } from 'https://cdn.jsdelivr.net/npm/@capacitor/preferences@5/+esm';
+
         // Exposer globalement pour le code Vue existant
         window.Capacitor = Capacitor;
         window.Filesystem = Filesystem;
         window.Directory = Directory;
         window.Encoding = Encoding;
-        
+        window.Preferences = Preferences;
+
+        console.log('[Capacitor] Modules chargés:', {
+            Capacitor: !!Capacitor,
+            Filesystem: !!Filesystem,
+            Preferences: !!Preferences,
+            isNative: Capacitor.isNativePlatform()
+        });
+
         // Demander la permission du système de fichiers au premier démarrage sur Android
         if (Capacitor.isNativePlatform()) {
             console.log('[Capacitor] Plateforme native détectée:', Capacitor.getPlatform());
-            
+
             // Demander les permissions au démarrage
             (async () => {
                 try {
+                    // Sur Android 13+ (API 33+), utiliser les nouvelles permissions granulaires
                     const permStatus = await Filesystem.checkPermissions();
-                    console.log('[Capacitor] Statut permissions:', permStatus);
-                    
+                    console.log('[Capacitor] Statut permissions:', JSON.stringify(permStatus));
+
+                    // Demander les permissions si non accordées
                     if (permStatus.publicStorage !== 'granted') {
                         console.log('[Capacitor] Demande de permission stockage...');
                         const request = await Filesystem.requestPermissions();
-                        console.log('[Capacitor] Résultat demande:', request);
+                        console.log('[Capacitor] Résultat demande:', JSON.stringify(request));
+
+                        if (request.publicStorage !== 'granted') {
+                            console.warn('[Capacitor] Permission stockage refusée - utilisation du stockage interne uniquement');
+                        }
                     }
                 } catch (e) {
-                    console.warn('[Capacitor] Erreur permissions:', e);
+                    console.warn('[Capacitor] Erreur permissions (normal sur Android 13+):', e.message);
+                    // Sur Android 13+, les permissions externes ne sont plus nécessaires pour le stockage app
                 }
             })();
         } else {
-            console.log('[Capacitor] Mode web détecté - APIs Filesystem limitées');
+            console.log('[Capacitor] Mode web détecté - APIs Filesystem/Preferences limitées');
         }
     </script>
 
