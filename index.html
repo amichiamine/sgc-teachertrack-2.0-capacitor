@@ -4208,17 +4208,38 @@
                         // On écrit silencieusement dans le dossier Documents/sgc-teachertrack
                         if (window.Capacitor?.isNativePlatform()) {
                             try {
-                                const fileNameToSave = fileName.value || 'classe_sans_nom';
+                                // Normaliser le nom de fichier (enlever .json si présent, puis rajouter)
+                                let baseFileName = fileName.value || 'classe_sans_nom';
+                                if (baseFileName.endsWith('.json')) {
+                                    baseFileName = baseFileName.slice(0, -5);
+                                }
+                                const fullPath = `sgc-teachertrack/${baseFileName}.json`;
+
+                                console.log('[SaveFile] Sauvegarde vers:', fullPath);
+
+                                // Créer le dossier s'il n'existe pas
+                                try {
+                                    await window.Filesystem.mkdir({
+                                        path: 'sgc-teachertrack',
+                                        directory: window.Directory.Documents,
+                                        recursive: true
+                                    });
+                                } catch (e) { /* Le dossier existe déjà */ }
+
+                                // Sauvegarder les données
                                 await window.Filesystem.writeFile({
-                                    path: `sgc-teachertrack/${fileNameToSave}.json`,
+                                    path: fullPath,
                                     data: JSON.stringify(db, null, 2),
                                     directory: window.Directory.Documents,
                                     encoding: window.Encoding.UTF8
                                 });
+
                                 hasUnsavedChanges.value = false;
-                                alert("Sauvegardé sur le mobile !");
+                                console.log('[SaveFile] Sauvegarde réussie:', fullPath);
+                                alert(`Sauvegardé: ${baseFileName}.json`);
                             } catch (e) {
-                                alert("Erreur Mobile : " + e.message);
+                                console.error('[SaveFile] Erreur:', e);
+                                alert("Erreur sauvegarde : " + e.message);
                             }
                             return;
                         }
