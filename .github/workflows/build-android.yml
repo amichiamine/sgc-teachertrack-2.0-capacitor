@@ -48,6 +48,36 @@ jobs:
       - name: Sync Capacitor
         run: npx cap sync android
       
+      - name: Setup Splash Screen Resources
+        run: |
+          # Copier le logo comme splash screen dans tous les dossiers drawable
+          mkdir -p android/app/src/main/res/drawable
+          mkdir -p android/app/src/main/res/drawable-land-hdpi
+          mkdir -p android/app/src/main/res/drawable-land-mdpi
+          mkdir -p android/app/src/main/res/drawable-land-xhdpi
+          mkdir -p android/app/src/main/res/drawable-land-xxhdpi
+          mkdir -p android/app/src/main/res/drawable-land-xxxhdpi
+          mkdir -p android/app/src/main/res/drawable-port-hdpi
+          mkdir -p android/app/src/main/res/drawable-port-mdpi
+          mkdir -p android/app/src/main/res/drawable-port-xhdpi
+          mkdir -p android/app/src/main/res/drawable-port-xxhdpi
+          mkdir -p android/app/src/main/res/drawable-port-xxxhdpi
+          
+          # Copier l'image splash (utiliser le logo existant)
+          cp Logo-TeacherTrack-Transparent.png android/app/src/main/res/drawable/splash.png
+          cp Logo-TeacherTrack-Transparent.png android/app/src/main/res/drawable-land-hdpi/splash.png
+          cp Logo-TeacherTrack-Transparent.png android/app/src/main/res/drawable-land-mdpi/splash.png
+          cp Logo-TeacherTrack-Transparent.png android/app/src/main/res/drawable-land-xhdpi/splash.png
+          cp Logo-TeacherTrack-Transparent.png android/app/src/main/res/drawable-land-xxhdpi/splash.png
+          cp Logo-TeacherTrack-Transparent.png android/app/src/main/res/drawable-land-xxxhdpi/splash.png
+          cp Logo-TeacherTrack-Transparent.png android/app/src/main/res/drawable-port-hdpi/splash.png
+          cp Logo-TeacherTrack-Transparent.png android/app/src/main/res/drawable-port-mdpi/splash.png
+          cp Logo-TeacherTrack-Transparent.png android/app/src/main/res/drawable-port-xhdpi/splash.png
+          cp Logo-TeacherTrack-Transparent.png android/app/src/main/res/drawable-port-xxhdpi/splash.png
+          cp Logo-TeacherTrack-Transparent.png android/app/src/main/res/drawable-port-xxxhdpi/splash.png
+          
+          echo "Splash screen resources created successfully"
+      
       - name: Make Gradle executable
         run: chmod +x android/gradlew
       
