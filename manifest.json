@@ -1,0 +1,37 @@
+{
+    "name": "SGC-TeacherTrack",
+    "short_name": "SGC-TeacherTrack",
+    "description": "Gestion de classe - Outil de suivi des élèves et des notes",
+    "start_url": "./index.html",
+    "display": "standalone",
+    "orientation": "portrait-primary",
+    "background_color": "#f3f4f6",
+    "theme_color": "#0f766e",
+    "scope": "./",
+    "lang": "fr",
+    "icons": [
+        {
+            "src": "Logo-TeacherTrack-Transparent.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ],
+    "categories": [
+        "education",
+        "productivity"
+    ],
+    "screenshots": [],
+    "shortcuts": [
+        {
+            "name": "Élèves",
+            "url": "./index.html?tab=students",
+            "description": "Gérer les élèves"
+        },
+        {
+            "name": "Notes",
+            "url": "./index.html?tab=grades",
+            "description": "Saisir les notes"
+        }
+    ]
+}
