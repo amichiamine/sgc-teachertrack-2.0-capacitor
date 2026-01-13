@@ -1,7 +1,7 @@
 {
     "appId": "com.sgc.teachertrack",
     "appName": "SGC-TeacherTrack",
-    "webDir": ".",
+    "webDir": "www",
     "bundledWebRuntime": false,
     "android": {
         "allowMixedContent": true,
