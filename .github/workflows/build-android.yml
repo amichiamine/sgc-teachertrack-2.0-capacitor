@@ -76,7 +76,34 @@ jobs:
           cp Logo-TeacherTrack-Transparent.png android/app/src/main/res/drawable-port-xxhdpi/splash.png
           cp Logo-TeacherTrack-Transparent.png android/app/src/main/res/drawable-port-xxxhdpi/splash.png
           
+          
           echo "Splash screen resources created successfully"
+
+          # Configurer l'icône de l'application (remplacer les icônes par défaut)
+          # On utilise icon-512.png comme source pour toutes les densités (pas idéal mais fonctionnel pour un build rapide)
+          
+          # Créer les dossiers mipmap s'ils n'existent pas (normalement créés par Capacitor, mais on assure)
+          mkdir -p android/app/src/main/res/mipmap-hdpi
+          mkdir -p android/app/src/main/res/mipmap-mdpi
+          mkdir -p android/app/src/main/res/mipmap-xhdpi
+          mkdir -p android/app/src/main/res/mipmap-xxhdpi
+          mkdir -p android/app/src/main/res/mipmap-xxxhdpi
+          
+          # Copier l'icône
+          cp icon-512.png android/app/src/main/res/mipmap-hdpi/ic_launcher.png
+          cp icon-512.png android/app/src/main/res/mipmap-mdpi/ic_launcher.png
+          cp icon-512.png android/app/src/main/res/mipmap-xhdpi/ic_launcher.png
+          cp icon-512.png android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png
+          cp icon-512.png android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png
+          
+          # Copier la version ronde (utiliser la même image)
+          cp icon-512.png android/app/src/main/res/mipmap-hdpi/ic_launcher_round.png
+          cp icon-512.png android/app/src/main/res/mipmap-mdpi/ic_launcher_round.png
+          cp icon-512.png android/app/src/main/res/mipmap-xhdpi/ic_launcher_round.png
+          cp icon-512.png android/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.png
+          cp icon-512.png android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png
+          
+          echo "App icons updated successfully"
       
       - name: Make Gradle executable
         run: chmod +x android/gradlew
