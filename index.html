@@ -63,6 +63,42 @@
         }
     </script>
 
+    <!-- Capacitor Injection: Charge les APIs Capacitor depuis CDN (web) ou natif (Android) -->
+    <script type="module">
+        // Importer Capacitor depuis CDN (fonctionne aussi bien sur web que dans l'APK)
+        import { Capacitor } from 'https://cdn.jsdelivr.net/npm/@capacitor/core@5/+esm';
+        import { Filesystem, Directory, Encoding } from 'https://cdn.jsdelivr.net/npm/@capacitor/filesystem@5/+esm';
+        
+        // Exposer globalement pour le code Vue existant
+        window.Capacitor = Capacitor;
+        window.Filesystem = Filesystem;
+        window.Directory = Directory;
+        window.Encoding = Encoding;
+        
+        // Demander la permission du système de fichiers au premier démarrage sur Android
+        if (Capacitor.isNativePlatform()) {
+            console.log('[Capacitor] Plateforme native détectée:', Capacitor.getPlatform());
+            
+            // Demander les permissions au démarrage
+            (async () => {
+                try {
+                    const permStatus = await Filesystem.checkPermissions();
+                    console.log('[Capacitor] Statut permissions:', permStatus);
+                    
+                    if (permStatus.publicStorage !== 'granted') {
+                        console.log('[Capacitor] Demande de permission stockage...');
+                        const request = await Filesystem.requestPermissions();
+                        console.log('[Capacitor] Résultat demande:', request);
+                    }
+                } catch (e) {
+                    console.warn('[Capacitor] Erreur permissions:', e);
+                }
+            })();
+        } else {
+            console.log('[Capacitor] Mode web détecté - APIs Filesystem limitées');
+        }
+    </script>
+
     <!-- Styles avec mécanisme de secours (local → CDN) -->
     <link id="fontawesome-local" rel="stylesheet" href="fontawesome.min.css"
         onerror="loadCDN('fontawesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css')">
