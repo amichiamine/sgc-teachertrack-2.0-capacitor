@@ -1,0 +1,16 @@
+{
+    "appId": "com.sgc.teachertrack",
+    "appName": "SGC-TeacherTrack",
+    "webDir": ".",
+    "bundledWebRuntime": false,
+    "android": {
+        "allowMixedContent": true,
+        "backgroundColor": "#0f766e"
+    },
+    "plugins": {
+        "Filesystem": {}
+    },
+    "server": {
+        "androidScheme": "https"
+    }
+}
