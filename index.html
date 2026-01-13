@@ -4970,7 +4970,21 @@
                         setTimeout(async () => {
 
                             // Charger la licence sauvegardée si elle existe
-                            const savedLicense = localStorage.getItem('teachertrack_license_v1');
+                            // Sur Android, utiliser Preferences, sinon localStorage
+                            let savedLicense = null;
+                            if (window.Capacitor?.isNativePlatform() && window.Preferences) {
+                                try {
+                                    const result = await window.Preferences.get({ key: 'teachertrack_license_v1' });
+                                    savedLicense = result.value;
+                                    console.log('[License] Chargement depuis Preferences:', savedLicense ? 'trouvée' : 'absente');
+                                } catch (e) {
+                                    console.warn('[License] Erreur Preferences:', e);
+                                }
+                            } else {
+                                savedLicense = localStorage.getItem('teachertrack_license_v1');
+                                console.log('[License] Chargement depuis localStorage:', savedLicense ? 'trouvée' : 'absente');
+                            }
+
                             if (savedLicense) {
                                 await verifyLicense(savedLicense);
                             }
